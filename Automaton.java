@@ -20,7 +20,7 @@ public class Automaton
     public Automaton(int numberOfCells)
     {
         this.numberOfCells = numberOfCells;
-        state = new int[numberOfCells];
+        state = new int[numberOfCells+1];
         reset();
     }
     
@@ -61,20 +61,53 @@ public class Automaton
     }
     
     /**
+     * q33. 
+     */
+    public void updateV2()
+    {
+        int[] nextState = new int[state.length];
+        int left = 0;
+        int centre = state[0];
+        for(int i=0; i<numberOfCells; ++i){
+            int right = state[i+1];     
+            nextState[i]=calculateNextState(left, centre, right);
+            left=centre;
+            centre=right;
+        }
+        state=nextState;
+    }
+    
+    /**
+     * q31, 32
      * Update the automaton to its next state.
      */
-    public void updateTest()
+    public void updateWithoutNextState()
     {
         // Naively update the state of each cell
         // based on the state of its two neighbors.
-        for(int i = 0; i < state.length; i++) {
+        int[] adjCells = new int[3];
+        adjCells[0]=0;
+        adjCells[1]=1;
+        adjCells[2]=1;
+        for(int i = 0; i < state.length;) {
             int left, center, right;
-            //q30
-            left = (i==0)?0:state[i-1];
-            center = state[i];
-            right = (i + 1 < state.length)?state[i+1]:0;
+            left = (i==0)?0:adjCells[0];
+            center = state[1];
+            right = (i + 1 < state.length)?state[2]:0;
             state[i] = (left + center + right) % 2;
+            ++i;
+            adjCells[0] = state[i-1];
+            adjCells[1] = state[i];
+            adjCells[2] = (state[+1]<state.length)?state[i+1]:state[i];
         }
+    }
+    
+    /**
+     * q34
+     */
+    public int calculateNextState(int left, int centre, int right)
+    {
+        return (centre + right*left + 1 + centre*right + left*centre*right)%2;
     }
     
     /**

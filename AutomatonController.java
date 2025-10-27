@@ -52,7 +52,7 @@ public class AutomatonController
      */
     public void step()
     {
-        auto.updateTest();
+        auto.updateV2();
         auto.print();
     }
     
