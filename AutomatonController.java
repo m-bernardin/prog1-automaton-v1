@@ -26,6 +26,14 @@ public class AutomatonController
     public AutomatonController()
     {
         this(50);
+        run(14);
+    }
+    
+    public AutomatonController(int numberOfCells, int steps)
+    {
+        auto = new Automaton(numberOfCells);
+        auto.print();
+        run(steps);
     }
     
     /**
@@ -44,7 +52,7 @@ public class AutomatonController
      */
     public void step()
     {
-        auto.update();
+        auto.updateTest();
         auto.print();
     }
     
